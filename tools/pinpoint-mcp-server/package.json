@@ -20,7 +20,8 @@
     "scan:secrets": "node scripts/secret-scan.js",
     "audit:deps": "npm audit --omit=dev --audit-level=high",
     "smoke": "node scripts/smoke.js",
-    "verify": "npm run lint && npm run test:coverage && npm run verify:offline && npm run scan:secrets && npm run audit:deps && npm run smoke"
+    "verify": "npm run lint && npm run test:coverage && npm run verify:offline && npm run scan:secrets && npm run audit:deps && npm run smoke",
+    "demo:core": "node scripts/demo-core.js"
   },
   "dependencies": {
     "@modelcontextprotocol/sdk": "^1.32.2",
