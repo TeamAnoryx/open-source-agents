@@ -108,3 +108,15 @@ test('T-TRF-4: replace without confirm is refused; with confirm it backs up then
     await target.close();
   }
 });
+
+test('T-TRF-5: unreadable import (a directory with a bundle name) is STORAGE_ERROR, not a crash', async () => {
+  const env = await setup();
+  try {
+    fs.mkdirSync(path.join(env.dataDir, 'imports', 'as-dir.json'), { recursive: true });
+    const result = await env.call('import_pins', { fileName: 'as-dir' });
+    assert.equal(result.isError, true);
+    assert.equal(result.body.error.code, 'STORAGE_ERROR');
+  } finally {
+    await env.close();
+  }
+});

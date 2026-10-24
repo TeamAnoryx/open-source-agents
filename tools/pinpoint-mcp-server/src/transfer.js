@@ -41,7 +41,11 @@ export function buildBundle(snapshot, { sessionId, now }) {
 /** Write an export into DATA_DIR/exports. Never overwrites an existing file. */
 export function writeExport(dataDir, fileName, text) {
   const dir = path.join(dataDir, EXPORTS_DIR);
-  fs.mkdirSync(dir, { recursive: true });
+  try {
+    fs.mkdirSync(dir, { recursive: true });
+  } catch (error) {
+    throw new StoreError('STORAGE_ERROR', `cannot create exports folder: ${error.code ?? error.name}`);
+  }
   const target = safeFileName(fileName, dir);
   try {
     fs.writeFileSync(target, text, { encoding: 'utf8', flag: 'wx' });
@@ -64,7 +68,11 @@ export function readImport(dataDir, fileName) {
     throw new StoreError('STORAGE_ERROR', `read failed: ${error.code ?? error.name}`);
   }
   if (stat.size > MAX_IMPORT_BYTES) throw new StoreError('IMPORT_INVALID', 'bundle exceeds the import size limit');
-  return fs.readFileSync(target, 'utf8');
+  try {
+    return fs.readFileSync(target, 'utf8');
+  } catch (error) {
+    throw new StoreError('STORAGE_ERROR', `read failed: ${error.code ?? error.name}`);
+  }
 }
 
 /**

@@ -24,7 +24,20 @@ export class ConfigError extends Error {
 
 /** Load .env from the working directory when present (Node 20.12+). */
 export function loadDotEnv(file = path.resolve('.env')) {
-  if (fs.existsSync(file) && typeof process.loadEnvFile === 'function') process.loadEnvFile(file);
+  if (typeof process.loadEnvFile !== 'function') return;
+  let present;
+  try {
+    present = fs.existsSync(file);
+  } catch (error) {
+    throw new ConfigError(`cannot check .env: ${error.code ?? error.name}`);
+  }
+  if (!present) return;
+  try {
+    process.loadEnvFile(file);
+  } catch (error) {
+    // Message only: the file content can hold a key, so it is never echoed.
+    throw new ConfigError(`cannot load .env: ${error.code ?? error.name}`);
+  }
 }
 
 export function loadConfig(env = process.env) {
