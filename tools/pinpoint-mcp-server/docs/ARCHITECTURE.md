@@ -7,7 +7,7 @@ Status: design. Modules marked *planned* are not written yet.
 | Module | Responsibility |
 | :--- | :--- |
 | `src/index.js` | Entry. Load config, create store, `createServer`, connect stdio. Handles SIGINT/SIGTERM. |
-| `src/server.js` | `createServer({ store, audit, config, clock })` returns an `McpServer` with all 14 tools registered. |
+| `src/server.js` | `createServer({ store, audit, config, clock })` returns an `McpServer` with all 13 tools registered. |
 | `src/constants.js` | Every limit and threshold (R8). |
 | `src/logger.js` | stderr-only logger. |
 | `src/config.js` | Env to validated config. Rejects filesystem-root data dirs. |
@@ -17,7 +17,7 @@ Status: design. Modules marked *planned* are not written yet.
 | `src/store.js` | JSON store. In-process mutex, clone, validate, tmp write, rename. Quarantine. |
 | `src/identity.js` | Message resolution: id → hash → fuzzy → not_found. Selector resolution. |
 | `src/search.js` | Keyword and trigram ranking. |
-| `src/guardrails.js` | Redaction, injection flag, path safety, rate limit. |
+| `src/guardrails.js` | Redaction, injection flag, path safety. Rate limit (G8) cut from this release. |
 | `src/audit.js` | Append-only JSONL audit, args hash only. |
 | `src/transfer.js` | Export and import, including ai-pinpoint bundle mapping. |
 | `src/tools/*.js` | Tool groups: session, pin, query, transfer. Each exports `register(server, deps)`. |

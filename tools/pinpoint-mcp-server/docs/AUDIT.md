@@ -49,4 +49,16 @@ Environment: to be recorded at run time.
 
 ## 3. Known gaps
 
-Build in progress. Coverage target (80%) not yet measured.
+Build in progress. Measured with `npm run test:coverage` (24 tests, all passing): line 92.70%, branch 75.43%, function 88.46%. Line coverage meets the 80% target; branch coverage does not. No coverage gate is enforced.
+
+Cut from this release (recorded as Planned in README):
+- `update_pin` `moveTo` (label/note/tags only kept).
+- `ai-pinpoint-export` bundle import (native bundle only kept).
+- `delete_session` tool.
+- Rate limiter (G8, SR-8) and its test T-GR-4. Related DoS row in SECURITY.md is now partly uncovered.
+- Coverage threshold as a gate (actual % reported above only).
+- Gemini live testing. Mock mode is the deliverable; Gemini adapter only if time remains.
+
+Tool count: 13 kept tools (`start_session`, `record_message`, `pin_message`, `bookmark_message`, `list_pins`, `search_pins`, `navigate_to_pin`, `update_pin`, `unpin`, `list_sessions`, `export_pins`, `import_pins`, `health`). The brief stated 12; the enumerated list has 13.
+
+Not yet built at this commit: guardrails.js, audit.js, transfer.js, tools/*.js, server.js, index.js, smoke, verify-offline, secret-scan. Guardrail tests T-GR-*, T-AUD-1, T-TRF-*, T-TOOL-*, T-OFF-* not run.

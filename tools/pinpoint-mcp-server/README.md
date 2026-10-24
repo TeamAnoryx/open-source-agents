@@ -18,8 +18,9 @@ Adapted from [TeamAnoryx/ai-pinpoint](https://github.com/TeamAnoryx/ai-pinpoint)
 - Record conversation turns, then pin or bookmark any message by id, ordinal, role, or text query.
 - List, search (keyword + trigram), and navigate to a pin with surrounding context.
 - Update labels, notes, tags and order; unpin with explicit confirmation.
-- Export and import pins, including `ai-pinpoint-export` bundles from the browser extension (snippet-only navigation).
-- Secret redaction before storage, prompt-injection flagging, untrusted-content wrapping, path-safe transfer, rate limiting, and an append-only audit log that never stores message text.
+- Export and import pins as a native JSON bundle (merge, or replace with confirmation).
+- Secret redaction before storage, prompt-injection flagging, untrusted-content wrapping, path-safe transfer, and an append-only audit log that never stores message text.
+- Not in this release: `ai-pinpoint-export` bundle import, `delete_session`, `update_pin` move, rate limiting (G8), coverage gate. See `docs/AUDIT.md` Known gaps.
 
 ### Implementation Status
 
@@ -31,7 +32,7 @@ Adapted from [TeamAnoryx/ai-pinpoint](https://github.com/TeamAnoryx/ai-pinpoint)
 | Text primitives (hash, normalise, trigram, clamp) | Planned |
 | Schema validators and JSON store (atomic write, quarantine) | Planned |
 | Identity resolution (id → hash → fuzzy) and search | Planned |
-| Guardrails (redaction, injection flag, path safety, rate limit) | Planned |
+| Guardrails (redaction, injection flag, path safety; rate limit cut) | Planned |
 | Audit log | Planned |
 | Tool: `start_session` | Planned |
 | Tool: `record_message` | Planned |
@@ -40,12 +41,12 @@ Adapted from [TeamAnoryx/ai-pinpoint](https://github.com/TeamAnoryx/ai-pinpoint)
 | Tool: `list_pins` | Planned |
 | Tool: `search_pins` | Planned |
 | Tool: `navigate_to_pin` | Planned |
-| Tool: `update_pin` | Planned |
+| Tool: `update_pin` (label/note/tags only; moveTo cut) | Planned |
 | Tool: `unpin` | Planned |
 | Tool: `list_sessions` | Planned |
-| Tool: `delete_session` | Planned |
+| Tool: `delete_session` (cut from this release) | Planned |
 | Tool: `export_pins` | Planned |
-| Tool: `import_pins` (incl. ai-pinpoint bundles) | Planned |
+| Tool: `import_pins` (native bundle; ai-pinpoint bundles cut) | Planned |
 | Tool: `health` | Planned |
 | Offline verifier (`scripts/verify-offline.js`) | Planned |
 | Secret scan (`scripts/secret-scan.js`) | Planned |
@@ -72,7 +73,7 @@ Adapted from [TeamAnoryx/ai-pinpoint](https://github.com/TeamAnoryx/ai-pinpoint)
 MCP client (Claude Desktop / Claude Code / agent)
         │  stdio (JSON-RPC, stdout = protocol)
         ▼
-src/index.js  ──▶  src/server.js  (McpServer, 14 tools)
+src/index.js  ──▶  src/server.js  (McpServer, 13 tools)
                         │
                         ├─▶ guardrails.js  (redaction, injection flag, path safety, rate limit)
                         ├─▶ schema.js      (hand validators at storage boundary)
@@ -189,7 +190,7 @@ npm run verify           # lint, coverage, offline verifier, secret scan, npm au
 
 - **Secrets Handling**: No secrets are needed. The server reads only its own env variables.
 - **Data Privacy**: The server makes zero network calls. Stored conversation text stays in `PINPOINT_DATA_DIR` on local disk.
-- **Safety**: The server runs no shell commands and spawns no child processes. Destructive tools (`unpin`, `delete_session`, `import_pins` with `replace`) require `confirm: true`. Stored text is returned only under `untrustedContent`.
+- **Safety**: The server runs no shell commands and spawns no child processes. Destructive tools (`unpin`, `import_pins` with `replace`) require `confirm: true`. Stored text is returned only under `untrustedContent`.
 - Full threat model: [docs/SECURITY.md](docs/SECURITY.md).
 
 ---
