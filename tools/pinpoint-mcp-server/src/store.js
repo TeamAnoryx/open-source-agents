@@ -102,13 +102,21 @@ export function createStore({
 
   /** Load from disk. Never deletes data (R6). Safe to call once at startup. */
   function load() {
-    let parsed;
+    let raw;
     try {
       if (!io.existsSync(storePath)) {
         state = emptyStore();
         return health;
       }
-      parsed = JSON.parse(io.readFileSync(storePath));
+      raw = io.readFileSync(storePath);
+    } catch (error) {
+      // Read failures (EACCES, EIO, ...) are not corruption: leave the file in place.
+      logger.error('could not read store; file left in place', { error: error.message });
+      throw new StoreError('STORAGE_ERROR', `read failed: ${error.code ?? error.name}`);
+    }
+    let parsed;
+    try {
+      parsed = JSON.parse(raw);
     } catch {
       recordCorruption('unparseable JSON');
       state = emptyStore();

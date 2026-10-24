@@ -190,3 +190,20 @@ test('T-STO-7: null and empty inputs are handled without throwing', async () => 
   assert.equal(nullText.ok, false);
   assert.equal(nullText.error.code, 'STORAGE_INVALID');
 });
+
+test('load: read failure (EACCES) throws STORAGE_ERROR and leaves store.json in place', async () => {
+  const good = createStore({ dataDir: dir, logger: quietLogger(), io: realIo });
+  good.load();
+  await good.createSession('healthy');
+  const before = fs.readFileSync(storeFile(), 'utf8');
+
+  const denied = createStore({
+    dataDir: dir,
+    logger: quietLogger(),
+    io: { ...realIo, readFileSync: () => { throw Object.assign(new Error('denied'), { code: 'EACCES' }); } },
+  });
+  assert.throws(() => denied.load(), (err) => err.code === 'STORAGE_ERROR');
+  assert.equal(denied.health().lastCorruptionEvent, null);
+  assert.equal(fs.readFileSync(storeFile(), 'utf8'), before);
+  assert.equal(fs.readdirSync(dir).some((f) => /^store\.corrupt-/.test(f)), false);
+});
