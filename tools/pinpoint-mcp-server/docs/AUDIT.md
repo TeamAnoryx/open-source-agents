@@ -49,8 +49,8 @@ Other passing unit tests: T-ID-1..4, T-STO-1, T-STO-2, T-STO-6, T-STO-7, T-TXT-1
 | S3 Offline | `npm run verify:offline` | PASS: `verify:offline OK (…\src)` |
 | S4 Secret scan | `npm run scan:secrets` | PASS: `scan:secrets OK` (fake keys are built at runtime; none are literals) |
 | S5 Dependency audit | `npm audit --omit=dev --audit-level=high` | PASS: `found 0 vulnerabilities` |
-| S6 Tracked-file hygiene | `git ls-files` for node_modules, .env, .data, .jsonl, store json | See §4 (run at G7) |
-| S7 Scope | `git diff --name-only` against the base branch | See §4 (run at G7) |
+| S6 Tracked-file hygiene | `git ls-files` for node_modules, .env, .data, .jsonl, store json | PASS: no matches (§4) |
+| S7 Scope | `git diff --name-only upstream/main...HEAD` | PASS: every changed path is inside `tools/pinpoint-mcp-server/`, `agents/pinpoint-agent/`, `tools/README.md` or `agents/README.md` (§4) |
 | S8 Smoke over stdio | `npm run smoke` | PASS: `smoke OK: 13/13 tools, all replies ok` |
 | S9 Agent demo | `npm run demo` in the agent folder | PASS: `demo OK` (see the agent AUDIT) |
 | Clean install | `rm -rf node_modules && npm ci && npm run verify` | PASS: exit 0; 50/50; same numbers as above |
@@ -71,4 +71,9 @@ Tool count: 13. The keep list is `start_session`, `record_message`, `pin_message
 
 ## 4. Final-check output
 
-Filled in at the final gate (G7) from the commands shown there.
+Run after the last code change (commit `561c9f9` and the docs commit that followed).
+
+- `git ls-files | grep -iE "node_modules|(^|/)\.env$|\.data/|\.jsonl$|store[^/]*\.json$"`: no output.
+- `git diff --name-only upstream/main...HEAD`: 78 paths, all inside the allowed folders or the two index READMEs.
+- Key-pattern grep over both folders (`sk-`, `AIza`, `AKIA`, `gh[pousr]_`, `xox`, private-key header): no output.
+- Working tree clean after push.
