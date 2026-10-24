@@ -184,3 +184,17 @@ test('T-TOOL-5: pinning the same message twice returns the existing pin with alr
     assert.equal((await call('list_pins', { sessionId })).body.count, 1);
   });
 });
+
+test('T-TOOL-5b: bookmarking a pinned message promotes the same pin in place', async () => {
+  await withServer({}, async ({ call }) => {
+    const { sessionId } = (await call('start_session')).body;
+    await call('record_message', { sessionId, role: 'assistant', text: 'promote me' });
+    const { pin } = (await call('pin_message', { sessionId, last: 'assistant' })).body;
+    const promoted = await call('bookmark_message', { sessionId, last: 'assistant', label: 'kept' });
+    assert.equal(promoted.body.promoted, true);
+    assert.equal(promoted.body.pin.pinId, pin.pinId);
+    assert.equal(promoted.body.pin.kind, 'bookmark');
+    assert.equal(promoted.body.pin.label, 'kept');
+    assert.equal((await call('list_pins', { sessionId })).body.count, 1);
+  });
+});

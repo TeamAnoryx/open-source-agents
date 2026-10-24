@@ -79,14 +79,25 @@ async function pinSelected(deps, args, { kind, label, note, tags, ctx }) {
   }
   const { message } = picked;
   const existing = session.pins.find((p) => p.messageId === message.messageId);
-  if (existing) return { pin: summarisePin(existing, args.sessionId), alreadyPinned: true };
+  const promotes = kind === 'bookmark' && existing?.kind === 'pin';
+  if (existing && !promotes) return { pin: summarisePin(existing, args.sessionId), alreadyPinned: true };
 
   const value = unwrap(
     await store.mutate((draft) => {
       const target = draft.sessions[args.sessionId];
       if (!target) throw new StoreError('SESSION_NOT_FOUND', 'no such session');
       const duplicate = target.pins.find((p) => p.messageId === message.messageId);
-      if (duplicate) return { pin: duplicate, alreadyPinned: true };
+      if (duplicate && kind === 'bookmark' && duplicate.kind === 'pin') {
+        // Bookmarking a pinned message promotes that pin in place: same pinId, new label.
+        duplicate.kind = 'bookmark';
+        duplicate.label = label;
+        if (note) duplicate.note = note;
+        if (tags.length > 0) duplicate.tags = tags;
+        duplicate.updatedAt = clock();
+        target.updatedAt = duplicate.updatedAt;
+        return { pin: duplicate, alreadyPinned: true, promoted: true };
+      }
+      if (duplicate) return { pin: duplicate, alreadyPinned: true, promoted: false };
       if (target.pins.length >= MAX_PINS_PER_SESSION) {
         throw new StoreError('LIMIT_PINS', `pin limit of ${MAX_PINS_PER_SESSION} reached`);
       }
@@ -97,7 +108,7 @@ async function pinSelected(deps, args, { kind, label, note, tags, ctx }) {
       return { pin, alreadyPinned: false };
     }),
   );
-  return { pin: summarisePin(value.pin, args.sessionId), alreadyPinned: value.alreadyPinned };
+  return { pin: summarisePin(value.pin, args.sessionId), alreadyPinned: value.alreadyPinned, promoted: value.promoted === true };
 }
 
 function registerPin(server, deps) {
