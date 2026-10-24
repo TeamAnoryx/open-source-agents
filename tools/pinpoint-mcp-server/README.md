@@ -180,7 +180,7 @@ Stored message text is never returned bare: it sits under `untrustedContent` wit
 ## How to Test
 
 ```bash
-npm test                 # 50 tests (node:test)
+npm test                 # 51 tests (node:test)
 npm run test:coverage    # same tests with line / branch / function coverage
 npm run verify:offline   # static: no network/process APIs or console.log in src/
 npm run scan:secrets     # key-shaped secrets, masked output
@@ -225,7 +225,7 @@ Last recorded run (clean `npm ci`, Windows): `npm run verify` exit 0. Details, p
 | Node | v24.13.1 |
 | npm | 11.8.0 |
 | Clean install | `npm ci` from `package-lock.json` (exit 0) |
-| `npm run verify` | exit 0: lint, 50/50 tests, offline OK, secret scan OK, audit 0 vulnerabilities, smoke 13/13 |
+| `npm run verify` | exit 0: lint, 51/51 tests, offline OK, secret scan OK, audit 0 vulnerabilities, smoke 13/13 |
 
 ---
 

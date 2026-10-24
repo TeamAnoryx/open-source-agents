@@ -45,7 +45,7 @@ Other passing unit tests: T-ID-1..4, T-STO-1, T-STO-2, T-STO-6, T-STO-7, T-TXT-1
 | Check | Command | Result |
 | :--- | :--- | :--- |
 | S1 Lint | `npm run lint` | PASS: "ESLint: No issues found" (`--max-warnings 0`) |
-| S2 Tests + coverage | `npm run test:coverage` | PASS: 50/50 tests. All files: line 93.95%, branch 80.88%, function 93.48% |
+| S2 Tests + coverage | `npm run test:coverage` | PASS: 51/51 tests. All files: line 93.88%, branch 80.64%, function 93.48% |
 | S3 Offline | `npm run verify:offline` | PASS: `verify:offline OK (…\src)` |
 | S4 Secret scan | `npm run scan:secrets` | PASS: `scan:secrets OK` (fake keys are built at runtime; none are literals) |
 | S5 Dependency audit | `npm audit --omit=dev --audit-level=high` | PASS: `found 0 vulnerabilities` |
@@ -53,7 +53,7 @@ Other passing unit tests: T-ID-1..4, T-STO-1, T-STO-2, T-STO-6, T-STO-7, T-TXT-1
 | S7 Scope | `git diff --name-only upstream/main...HEAD` | PASS: every changed path is inside `tools/pinpoint-mcp-server/`, `agents/pinpoint-agent/`, `tools/README.md` or `agents/README.md` (§4) |
 | S8 Smoke over stdio | `npm run smoke` | PASS: `smoke OK: 13/13 tools, all replies ok` |
 | S9 Agent demo | `npm run demo` in the agent folder | PASS: `demo OK` (see the agent AUDIT) |
-| Clean install | `rm -rf node_modules && npm ci && npm run verify` | PASS: exit 0; 50/50; same numbers as above |
+| Clean install | `rm -rf node_modules && npm ci && npm run verify` | PASS: exit 0; 51/51; same numbers as above |
 
 ## 3. Known gaps and deferred items
 

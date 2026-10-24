@@ -41,13 +41,13 @@ Tests (19): T-AG-1, T-AG-1b, T-AG-1c, parseArgs, T-AG-2, T-AG-3, T-AG-4, T-AG-5,
 | Check | Command | Result |
 | :--- | :--- | :--- |
 | Lint | `npm run lint` | PASS: 0 problems, `--max-warnings 0` |
-| Tests + coverage | `npm run test:coverage` | PASS: 19/19. All files: line 75.77%, branch 64.00%, function 67.98% |
+| Tests + coverage | `npm run test:coverage` | PASS: 20/20. All files: line 75.66%, branch 63.54%, function 68.42% |
 | Secret scan | `npm run scan:secrets` | PASS: `scan:secrets OK` |
 | Dependency audit | `npm audit --omit=dev --audit-level=high` | PASS: `found 0 vulnerabilities` |
 | Demo | `npm run demo` | PASS: `demo OK` (transcript in README) |
 | Clean install | `rm -rf node_modules && npm ci && npm run verify` | PASS: exit 0 |
 
-Coverage is below the server's 93.95% and below the 80% target used for the server. No coverage gate is enforced on the agent. The uncovered code is mainly the interactive REPL loop in `src/index.js` and the live Gemini call path.
+Coverage is below the server's 93.88% and below the 80% target used for the server. No coverage gate is enforced on the agent. The uncovered code is mainly the interactive REPL loop in `src/index.js` and the live Gemini call path.
 
 ## 3. Known gaps
 

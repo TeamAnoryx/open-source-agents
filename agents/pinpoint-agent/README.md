@@ -170,7 +170,7 @@ Gemini mode: **not live-tested.** No transcript is shown because no Gemini run h
 ## How to Test
 
 ```bash
-npm test                # 19 tests (node:test)
+npm test                # 20 tests (node:test)
 npm run test:coverage   # same tests with coverage
 npm run scan:secrets    # key-shaped secrets in this package, masked output
 npm run audit:deps      # npm audit --omit=dev --audit-level=high (needs registry access)
