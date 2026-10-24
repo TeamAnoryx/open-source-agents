@@ -2,7 +2,7 @@
 
 > A CLI chat agent that records every turn into the Pinpoint MCP server and uses its tools when you say things like "pin that" or "take me back to pin 2". Runs on Gemini or a fully offline mock model.
 
-> **Status: 🚧 Work in progress (Draft PR).** Being built live at GDG Cloud Bengaluru FORK. BUILD. MERGE., 24 Oct 2026. Sections marked *Pending* are filled from real runs before this PR leaves draft.
+> **Status: 🚧 Work in progress (Draft PR).** Built at GDG Cloud Bengaluru FORK. BUILD. MERGE., 24 Oct 2026. The agent source is not written yet; only scaffold, config and docs exist. No demo output is shown because no demo has run.
 
 Companion to [`tools/pinpoint-mcp-server`](../../tools/pinpoint-mcp-server/). Adapted concept from [TeamAnoryx/ai-pinpoint](https://github.com/TeamAnoryx/ai-pinpoint) (MIT © 2026 Anoryx Tech Solutions).
 
@@ -27,15 +27,15 @@ Companion to [`tools/pinpoint-mcp-server`](../../tools/pinpoint-mcp-server/). Ad
 | :--- | :--- |
 | Project scaffold (package.json, eslint config, .gitignore, .env.example) | Done |
 | Documentation set (README, docs/) | In progress |
-| Config and constants | Planned |
-| Guardrails (input cap, tool allowlist, session injection, output wrap, call cap) | Planned |
-| MCP client over stdio | Planned |
-| Mock intent model (offline) | Planned |
-| Gemini adapter (`@google/genai`, manual function calling) | Planned |
-| Agent turn loop and confirmation gate | Planned |
-| CLI REPL (`--mock`, `--once`, `--session`, `--server`) | Planned |
-| Demo script (`scripts/demo.js`) | Planned |
-| Tests (T-AG-1 .. T-AG-9) | Planned |
+| Config and constants | In progress |
+| Guardrails (input cap, tool allowlist, session injection, output wrap, call cap) | In progress |
+| MCP client over stdio | In progress |
+| Mock intent model (offline) | In progress |
+| Gemini adapter (`@google/genai`, manual function calling) | In progress (not started; may be deferred) |
+| Agent turn loop and confirmation gate | In progress |
+| CLI REPL (`--mock`, `--once`, `--session`, `--server`) | In progress |
+| Demo script (`scripts/demo.js`) | In progress |
+| Tests (T-AG-1 .. T-AG-9) | In progress (0 tests exist; `npm test` passes vacuously) |
 
 ---
 
@@ -128,7 +128,7 @@ Commands inside the REPL: `/pins`, `/sessions`, `/help`, `/exit`.
 
 ## Example Input & Output
 
-*Pending — will be replaced with a real transcript from `npm run demo` before this PR leaves draft. A live Gemini run is pending and will be reported separately as tested or not tested.*
+*No transcript yet. The agent source (`src/`) and `scripts/demo.js` are not written, so `npm run demo` cannot run. A transcript will be pasted here only after it runs. Live Gemini: not tested.*
 
 ---
 

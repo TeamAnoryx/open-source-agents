@@ -2,7 +2,7 @@
 
 > A local-only MCP server that lets AI agents pin, bookmark, search and navigate back to specific messages in long agent-human conversations. Zero network calls.
 
-> **Status: 🚧 Work in progress (Draft PR).** Being built live at GDG Cloud Bengaluru FORK. BUILD. MERGE., 24 Oct 2026. Sections marked *Pending* are filled from real runs before this PR leaves draft.
+> **Status: 🚧 Work in progress (Draft PR).** Built at GDG Cloud Bengaluru FORK. BUILD. MERGE., 24 Oct 2026. Only the rows marked Done below are built and tested; the rest are not yet implemented. No output is shown for anything that has not run.
 
 Adapted from [TeamAnoryx/ai-pinpoint](https://github.com/TeamAnoryx/ai-pinpoint) (MIT © 2026 Anoryx Tech Solutions).
 
@@ -28,29 +28,19 @@ Adapted from [TeamAnoryx/ai-pinpoint](https://github.com/TeamAnoryx/ai-pinpoint)
 | :--- | :--- |
 | Project scaffold (package.json, eslint config, .gitignore, .env.example) | Done |
 | Documentation set (README, docs/, SECURITY, DECISIONS) | In progress |
-| Config, constants, logger, ids | Planned |
-| Text primitives (hash, normalise, trigram, clamp) | Planned |
-| Schema validators and JSON store (atomic write, quarantine) | Planned |
-| Identity resolution (id → hash → fuzzy) and search | Planned |
-| Guardrails (redaction, injection flag, path safety; rate limit cut) | Planned |
-| Audit log | Planned |
-| Tool: `start_session` | Planned |
-| Tool: `record_message` | Planned |
-| Tool: `pin_message` | Planned |
-| Tool: `bookmark_message` | Planned |
-| Tool: `list_pins` | Planned |
-| Tool: `search_pins` | Planned |
-| Tool: `navigate_to_pin` | Planned |
-| Tool: `update_pin` (label/note/tags only; moveTo cut) | Planned |
-| Tool: `unpin` | Planned |
-| Tool: `list_sessions` | Planned |
-| Tool: `delete_session` (cut from this release) | Planned |
-| Tool: `export_pins` | Planned |
-| Tool: `import_pins` (native bundle; ai-pinpoint bundles cut) | Planned |
-| Tool: `health` | Planned |
-| Offline verifier (`scripts/verify-offline.js`) | Planned |
-| Secret scan (`scripts/secret-scan.js`) | Planned |
-| Smoke test over stdio (`scripts/smoke.js`) | Planned |
+| Config, constants, logger, ids | Done |
+| Text primitives (hash, normalise, trigram, clamp) | Done |
+| Schema validators and JSON store (atomic write, quarantine) | Done |
+| Identity resolution (id → hash → fuzzy) and search | Done |
+| Guardrails (redaction, injection flag, path safety; rate limit cut) | Done |
+| Audit log | Done |
+| MCP tools (13 kept: start_session, record_message, pin_message, bookmark_message, list_pins, search_pins, navigate_to_pin, update_pin, unpin, list_sessions, export_pins, import_pins, health) | In progress |
+| Entry point (`src/index.js`) and server (`src/server.js`) | In progress |
+| Transfer (`src/transfer.js`) | In progress |
+| Offline verifier (`scripts/verify-offline.js`) | In progress |
+| Secret scan (`scripts/secret-scan.js`) | In progress |
+| Smoke test over stdio (`scripts/smoke.js`) | In progress |
+| Cut: `delete_session`, ai-pinpoint bundle import, rate limiter (G8), `update_pin` moveTo, coverage gate | Deferred |
 
 ---
 
