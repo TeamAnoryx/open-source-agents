@@ -47,7 +47,13 @@ export function scanSecrets(root) {
 const HERE = path.dirname(fileURLToPath(import.meta.url));
 if (process.argv[1] && path.resolve(process.argv[1]) === fileURLToPath(import.meta.url)) {
   const root = path.resolve(HERE, '..');
-  const hits = scanSecrets(root);
+  let hits;
+  try {
+    hits = scanSecrets(root);
+  } catch (error) {
+    process.stdout.write(`scan:secrets FAILED: cannot read ${root}: ${error.code ?? error.message}\n`);
+    process.exit(1);
+  }
   for (const h of hits) {
     process.stdout.write(`${path.relative(root, h.file)}:${h.line}: ${h.type}: ${h.masked}\n`);
   }

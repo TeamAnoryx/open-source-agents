@@ -43,7 +43,13 @@ export function scan(dir) {
 const HERE = path.dirname(fileURLToPath(import.meta.url));
 if (process.argv[1] && path.resolve(process.argv[1]) === fileURLToPath(import.meta.url)) {
   const target = path.resolve(HERE, '..', 'src');
-  const findings = scan(target);
+  let findings;
+  try {
+    findings = scan(target);
+  } catch (error) {
+    process.stdout.write(`verify:offline FAILED: cannot read ${target}: ${error.code ?? error.message}\n`);
+    process.exit(1);
+  }
   for (const f of findings) {
     process.stdout.write(`${path.relative(process.cwd(), f.file)}:${f.line}: ${f.why}: ${f.text}\n`);
   }

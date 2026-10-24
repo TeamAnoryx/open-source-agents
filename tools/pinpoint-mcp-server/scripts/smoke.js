@@ -11,7 +11,17 @@ import { StdioClientTransport, getDefaultEnvironment } from '@modelcontextprotoc
 const HERE = path.dirname(fileURLToPath(import.meta.url));
 const SERVER_ENTRY = path.resolve(HERE, '..', 'src', 'index.js');
 
-export async function runSmoke({ log = (line) => process.stdout.write(`${line}\n`) } = {}) {
+export async function runSmoke(options = {}) {
+  try {
+    return await runSmokeFlow(options);
+  } catch (error) {
+    const log = options.log ?? ((line) => process.stdout.write(`${line}\n`));
+    log(`FAIL  smoke aborted: ${error.code ?? error.message}`);
+    return 1;
+  }
+}
+
+async function runSmokeFlow({ log = (line) => process.stdout.write(`${line}\n`) } = {}) {
   const dataDir = fs.mkdtempSync(path.join(os.tmpdir(), 'pinpoint-smoke-'));
   const transport = new StdioClientTransport({
     command: process.execPath,
