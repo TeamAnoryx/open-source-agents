@@ -271,6 +271,7 @@ export function createStore({
     load,
     mutate,
     snapshot,
+    quarantine,
     createSession,
     appendMessage,
     addPin,

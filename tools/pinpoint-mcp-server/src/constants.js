@@ -28,3 +28,6 @@ export const AMBIGUITY_MARGIN = 0.05;
 export const STORE_FILE = 'store.json';
 export const QUARANTINE_FILE = 'quarantine.json';
 export const AUDIT_FILE = 'audit.jsonl';
+export const BUNDLE_KIND = 'pinpoint-mcp-export';
+export const BUNDLE_SCHEMA_VERSION = 1;
+export const DEFAULT_EXPORT_PREFIX = 'pinpoint-export';
