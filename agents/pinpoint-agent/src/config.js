@@ -30,9 +30,10 @@ export function loadDotEnv(file = path.resolve('.env')) {
 export function loadConfig(env = process.env) {
   const apiKey = env.GEMINI_API_KEY?.trim() || null;
   const modelName = env.MODEL_NAME?.trim() || MODEL_NAME_DEFAULT;
+  // SERVER_RELATIVE_PATH is relative to the package root, one level above this src/ folder.
   const serverPath = env.PINPOINT_SERVER_PATH
     ? path.resolve(env.PINPOINT_SERVER_PATH)
-    : path.resolve(HERE, SERVER_RELATIVE_PATH);
+    : path.resolve(HERE, '..', SERVER_RELATIVE_PATH);
   const dataDir = env.PINPOINT_DATA_DIR?.trim() || null;
 
   const callsRaw = env.AGENT_MAX_TOOL_CALLS;

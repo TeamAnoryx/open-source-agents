@@ -37,7 +37,7 @@ function defaultReply(input) {
 
 function summarise(entry) {
   const body = parseBody(entry);
-  if (!body.ok) return `Tool error: ${body.error?.code ?? 'unknown'}.`;
+  if (!body.ok) return `Tool error: ${body.error?.code ?? 'unknown'} (${body.error?.message ?? 'no detail'}).`;
   switch (entry.name) {
     case 'pin_message':
       return body.alreadyPinned ? 'That message was already pinned.' : `Pinned message ${body.pin.ordinal + 1}.`;
