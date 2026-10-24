@@ -170,9 +170,14 @@ export function createStore({
     tail = new Promise((resolve) => {
       release = resolve;
     });
+    let slotHandedOff = false;
     try {
       const turn = await withTimeout(previous, lockTimeoutMs);
       if (turn === 'timeout') {
+        // The slow holder may still be writing. Keep our place in the queue until it settles,
+        // so later mutations cannot overtake it (lost update). We never run `fn` ourselves.
+        slotHandedOff = true;
+        previous.finally(release);
         return { ok: false, error: { code: 'LOCK_TIMEOUT', message: 'store is busy' } };
       }
       const draft = structuredClone(state);
@@ -197,7 +202,7 @@ export function createStore({
       state = checked.value;
       return { ok: true, value };
     } finally {
-      release();
+      if (!slotHandedOff) release();
     }
   }
 

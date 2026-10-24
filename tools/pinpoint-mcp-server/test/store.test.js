@@ -207,3 +207,30 @@ test('load: read failure (EACCES) throws STORAGE_ERROR and leaves store.json in 
   assert.equal(fs.readFileSync(storeFile(), 'utf8'), before);
   assert.equal(fs.readdirSync(dir).some((f) => /^store\.corrupt-/.test(f)), false);
 });
+
+test('T-STO-8: LOCK_TIMEOUT keeps queue order; no mutation overtakes the slow holder', async () => {
+  const store = createStore({ dataDir: dir, logger: quietLogger(), lockTimeoutMs: 50 });
+  const order = [];
+  const sleep = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
+
+  const slow = store.mutate(async () => {
+    order.push('slow-start');
+    await sleep(200);
+    order.push('slow-end');
+  });
+  const timedOut = await store.mutate(() => {
+    order.push('timed-out');
+  });
+  const probe = await store.mutate(() => {
+    order.push('probe');
+  });
+  await slow;
+  const final = await store.mutate(() => {
+    order.push('final');
+  });
+
+  assert.equal(timedOut.error.code, 'LOCK_TIMEOUT');
+  assert.equal(probe.error.code, 'LOCK_TIMEOUT');
+  assert.equal(final.ok, true);
+  assert.deepEqual(order, ['slow-start', 'slow-end', 'final']);
+});
