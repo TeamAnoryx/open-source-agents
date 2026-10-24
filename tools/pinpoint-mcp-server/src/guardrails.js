@@ -116,9 +116,13 @@ export function safeFileName(name, dir) {
   if (!target.startsWith(root + path.sep)) {
     throw new GuardError('PATH_REJECTED', 'resolved path escapes the directory');
   }
-  if (fs.existsSync(target) && fs.lstatSync(target).isSymbolicLink()) {
-    throw new GuardError('PATH_REJECTED', 'symbolic links are not allowed');
+  let isLink;
+  try {
+    isLink = fs.existsSync(target) && fs.lstatSync(target).isSymbolicLink();
+  } catch (error) {
+    throw new GuardError('PATH_REJECTED', `cannot inspect target: ${error.code ?? error.name}`);
   }
+  if (isLink) throw new GuardError('PATH_REJECTED', 'symbolic links are not allowed');
   return target;
 }
 
