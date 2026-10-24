@@ -51,7 +51,7 @@ function withTimeout(promise, ms) {
  * @param {object} opts
  * @param {string} opts.dataDir
  * @param {() => number} [opts.clock]
- * @param {ReturnType<typeof import('./logger.js').createLogger>} opts.logger
+ * @param {{ error: Function, warn: Function, info: Function, debug: Function }} opts.logger
  * @param {object} [opts.io]  filesystem seam (tests inject failures)
  * @param {number} [opts.maxStoreBytes]
  * @param {number} [opts.lockTimeoutMs]
