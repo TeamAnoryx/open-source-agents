@@ -19,10 +19,11 @@ const out = (line = '') => process.stdout.write(`${line}\n`);
 const section = (title) => out(`\n=== ${title} ===`);
 const quietLogger = () => createLogger('error', new Writable({ write: (_c, _e, cb) => cb() }));
 
-const dataDir = fs.mkdtempSync(path.join(os.tmpdir(), 'pinpoint-demo-'));
+let dataDir;
 let exitCode = 0;
 
 try {
+  dataDir = fs.mkdtempSync(path.join(os.tmpdir(), 'pinpoint-demo-'));
   const store = createStore({ dataDir, logger: quietLogger() });
   store.load();
 
@@ -148,8 +149,15 @@ try {
   out(`FAILED: ${error.message}`);
   exitCode = 1;
 } finally {
-  fs.rmSync(dataDir, { recursive: true, force: true });
-  out(`temp dir removed: ${!fs.existsSync(dataDir)}`);
+  if (dataDir) {
+    try {
+      fs.rmSync(dataDir, { recursive: true, force: true });
+      out(`temp dir removed: ${!fs.existsSync(dataDir)}`);
+    } catch (error) {
+      out(`cleanup FAILED for ${dataDir}: ${error.code ?? error.message}`);
+      exitCode = 1;
+    }
+  }
 }
 
 process.exitCode = exitCode;

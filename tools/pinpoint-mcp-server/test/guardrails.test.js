@@ -20,7 +20,7 @@ const FAKE = {
   aws: ['AK', 'IA'].join('') + 'FAKE'.repeat(4),
   github: ['gh', 'p_'].join('') + 'F'.repeat(36),
   slack: ['xo', 'xb-'].join('') + '1234567890-FAKEFAKE',
-  jwt: 'eyJFAKE.eyJFAKE.FAKESIG',
+  jwt: ['eyJ' + 'FAKE', 'eyJ' + 'FAKE', 'FAKESIG'].join('.'),
   pem: ['-----BEGIN RSA ', 'PRIVATE KEY-----'].join('') + '\nFAKEKEYDATA\n' + ['-----END RSA ', 'PRIVATE KEY-----'].join(''),
   password: 'password=hunter2fake',
 };
